@@ -14,8 +14,7 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
 
 function MyApp(props: AppProps) {
   const { Component, pageProps } = props
-  const { wasm } = useWasm()
-  console.log('wasm :>> ', wasm?.init())
+
   return (
     <>
       <Head>

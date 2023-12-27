@@ -3,7 +3,7 @@ import { Chess, ChessPosition } from '../types'
 import { checkSameChessPosition, getChessImg } from '../utils'
 
 export interface ChessBoardProps {
-  board: (Chess | null)[][]
+  board: Chess[][]
 }
 
 const BOARD_WIDTH = 450

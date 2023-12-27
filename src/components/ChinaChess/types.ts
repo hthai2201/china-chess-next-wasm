@@ -1,11 +1,12 @@
 export enum ChessType {
-  King = 1, // 帅
-  Advisor = 2, // 士
-  Bishop = 3, // 相
-  Knight = 4, // 马
-  Rook = 5, // 车
-  Cannon = 6, // 炮
-  Pawn = 0, // 兵
+  King = 'King', // 帅
+  Advisor = 'Advisor', // 士
+  Bishop = 'Bishop', // 相
+  Knight = 'Knight', // 马
+  Rook = 'Rook', // 车
+  Cannon = 'Cannon', // 炮
+  Pawn = 'Pawn', // 兵
+  None = 'None',
 }
 
 export enum ChessTurn {
@@ -19,11 +20,11 @@ export interface ChessPosition {
   col: number
 }
 export enum ChessPlayer {
-  Red,
-  Black,
+  Red = 'Red',
+  Black = 'Black',
 }
 export interface Chess {
-  type: ChessType
+  chess_type: ChessType
   player: ChessPlayer
 }
 export interface ChessMove {

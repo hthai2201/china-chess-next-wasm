@@ -2,11 +2,13 @@ import { Layout } from 'components/Layout'
 
 import { ChessBoard, ChessBoardProps } from 'components/ChinaChess'
 import {
+  Chess,
   ChessPlayer,
   ChessPosition,
   ChessType,
 } from 'components/ChinaChess/types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { WASM_READY_STATE, useWasm } from 'context/wasmContext'
 
 interface StatCardProps {
   title: string
@@ -16,181 +18,22 @@ interface StatCardProps {
 }
 
 const DashboardPage = () => {
-  // const { user } = useAuthContext()
+  const { wasm, readyState } = useWasm()
+  const [board, setBoard] = useState<Chess[][]>([])
+  useEffect(() => {
+    if (readyState === WASM_READY_STATE.READY) {
+      const boardObj = wasm?.init?.()
+      if (!boardObj) {
+        return
+      }
+      const board = boardObj.get_board() as unknown as Chess[][]
+      console.log('board.get_board() :>> ', board)
+      setBoard(board)
+    }
+  }, [readyState, wasm])
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <ChessBoard
-        board={
-          [
-            [
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Rook,
-              },
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Knight,
-              },
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Bishop,
-              },
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Advisor,
-              },
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.King,
-              },
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Advisor,
-              },
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Bishop,
-              },
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Knight,
-              },
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Rook,
-              },
-            ],
-            [null, null, null, null, null, null, null, null, null],
-            [
-              null,
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Cannon,
-              },
-              null,
-              null,
-              null,
-              null,
-              null,
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Cannon,
-              },
-              null,
-            ],
-            [
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Pawn,
-              },
-              null,
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Pawn,
-              },
-              null,
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Pawn,
-              },
-              null,
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Pawn,
-              },
-              null,
-              {
-                player: ChessPlayer.Black,
-                type: ChessType.Pawn,
-              },
-            ],
-            [null, null, null, null, null, null, null, null, null],
-            [null, null, null, null, null, null, null, null, null],
-            [
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Pawn,
-              },
-              null,
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Pawn,
-              },
-              null,
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Pawn,
-              },
-              null,
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Pawn,
-              },
-              null,
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Pawn,
-              },
-            ],
-            [
-              null,
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Cannon,
-              },
-              null,
-              null,
-              null,
-              null,
-              null,
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Cannon,
-              },
-              null,
-            ],
-            [null, null, null, null, null, null, null, null, null],
-            [
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Rook,
-              },
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Knight,
-              },
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Bishop,
-              },
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Advisor,
-              },
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.King,
-              },
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Advisor,
-              },
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Bishop,
-              },
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Knight,
-              },
-              {
-                player: ChessPlayer.Red,
-                type: ChessType.Rook,
-              },
-            ],
-          ] as ChessBoardProps['board']
-        }
-      />
+      <ChessBoard board={board} />
     </div>
   )
 }

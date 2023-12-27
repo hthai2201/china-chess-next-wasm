@@ -15,15 +15,23 @@ export function getChessImg(chess?: Chess | null) {
     [ChessType.Knight]: 'n',
     [ChessType.Pawn]: 'p',
     [ChessType.Rook]: 'r',
+    [ChessType.None]: 'oo',
   }
   const playerMapper: Record<ChessPlayer, string> = {
-    [ChessTurn.Red]: 'r',
-    [ChessTurn.Black]: 'b',
+    [ChessPlayer.Red]: 'r',
+    [ChessPlayer.Black]: 'b',
   }
-  if (!chess || !typeMapper[chess.type] || !playerMapper[chess.player]) {
+  if (
+    !chess ||
+    !typeMapper[chess.chess_type] ||
+    !playerMapper[chess.player] ||
+    typeMapper[chess.chess_type] === ChessType.None
+  ) {
     return `/images/oo.gif`
   }
-  return `/images/${playerMapper[chess.player]}${typeMapper[chess.type]}.gif`
+  return `/images/${playerMapper[chess.player]}${
+    typeMapper[chess.chess_type]
+  }.gif`
 }
 
 export function checkSameChessPosition(a: ChessPosition, b: ChessPosition) {
